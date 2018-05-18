@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Dje si Chuck! {{ randomJoke.value }} -->
     <div class="card" style="width: 18rem;">
       <img class="card-img-top"
            :src="randomJoke.iconUrl"
@@ -10,13 +9,24 @@
         <p class="card-text"
            v-text="randomJoke.value">
         </p>
+        <input class="form-control mb-2"
+               type="text"
+               placeholder="Enter Joke Category..."
+               @input="setCategory"
+        />
+        <a
+          class="btn btn-primary"
+          @click="getNewJoke"
+        >
+        Get new Joke
+        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import { store } from './../store';
 
 export default {
@@ -27,16 +37,18 @@ export default {
     })
   },
   methods: {
-    ...mapActions([
-      'fetchRandomJoke'
-    ])
+    ...mapMutations([
+      'setJokeCategory'
+    ]),
+    getNewJoke() {
+      store.dispatch('fetchRandomJoke', () => {});
+    },
+    setCategory(event) {
+      this.setJokeCategory(event.target.value);
+    }
   },
-  // created() {
-  //   this.fetchRandomJoke();
-  // },
   beforeRouteEnter(to, from, next) {
     store.dispatch('fetchRandomJoke', next);
-    // next();
   }
 }
 </script>
