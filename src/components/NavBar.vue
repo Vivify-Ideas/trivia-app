@@ -1,6 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Trivia App</a>
+    <router-link
+      class="navbar-brand"
+      to="/">
+      Trivia App
+    </router-link>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav">
         <li class="nav-item active">
