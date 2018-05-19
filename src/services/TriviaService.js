@@ -7,10 +7,20 @@ class TriviaService {
     });
   }
 
-  getRandomTrivias() {
+  getRandomTrivias(triviaCategoryId) {
     return this.client.get('/random', {
-      params: { count: 30 }
+      params: { count: 30, category: triviaCategoryId }
     });
+  }
+
+  // it's always better to have possibility to change later
+  // number of needed trivia categories
+  getTriviasCategories(numberOfCategories = 10) {
+    return this.client.get('/categories', {
+      params: {
+        count: numberOfCategories
+      }
+    })
   }
 }
 

@@ -1,23 +1,37 @@
 <template>
-  <div class="accordion">
-    <div
-      class="card"
-      v-for="trivia in trivias"
-      :key="trivia.id"
-      @click="toggleTrivia(trivia.id)"
+  <div class="container">
+    <select
+      class="custom-select"
+      size="10"
+      @change="onCategoryChanged"
     >
-      <div class="card-header">
-        <h5 class="mb-0">
-          {{ trivia.question }}
-        </h5>
-      </div>
-
+      <option
+        v-for="triviaCategory in triviaCategories"
+        :key="triviaCategory.id"
+        :value="triviaCategory.id">
+        {{ triviaCategory.title }}
+      </option>
+    </select>
+    <div class="accordion">
       <div
-        class="collapse"
-        :class="{ 'show': isVisibleTriviaAnswer(trivia.id) }"
+        class="card"
+        v-for="trivia in trivias"
+        :key="trivia.id"
+        @click="toggleTrivia(trivia.id)"
       >
-        <div class="card-body">
-          {{ trivia.answer }}
+        <div class="card-header">
+          <h5 class="mb-0">
+            {{ trivia.question }}
+          </h5>
+        </div>
+
+        <div
+          class="collapse"
+          :class="{ 'show': isVisibleTriviaAnswer(trivia.id) }"
+        >
+          <div class="card-body">
+            {{ trivia.answer }}
+          </div>
         </div>
       </div>
     </div>
@@ -36,12 +50,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      trivias: 'getTrivias'
+      trivias: 'getTrivias',
+      triviaCategories: 'getTriviaCategories'
     })
   },
   methods: {
     ...mapActions([
-      'fetchTrivias'
+      'fetchTrivias',
+      'fetchTriviaCategories'
     ]),
     toggleTrivia(triviaId) {
       let triviaIdIndex = this.selectedTriviasIds.indexOf(triviaId);
@@ -53,10 +69,14 @@ export default {
     },
     isVisibleTriviaAnswer(triviaId) {
       return this.selectedTriviasIds.indexOf(triviaId) > -1;
+    },
+    onCategoryChanged(event) {
+      this.fetchTrivias(event.target.value);
     }
   },
   created() {
     this.fetchTrivias();
+    this.fetchTriviaCategories();
   }
 }
 </script>
